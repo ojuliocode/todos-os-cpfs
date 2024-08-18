@@ -61,7 +61,13 @@ function* generateCombinations(prefix, length) {
 }
 
 function* getAllCombinations(length) {
-  yield* generateCombinations('', length)
+  const forbiddenCpf = '008.881.731-80';
+  const formattedForbiddenCpf = forbiddenCpf.replace(/\./g, '').replace('-', '');
+
+  yield* generateCombinations('', length).filter(combination => {
+    const formattedCombination = combination.replace(/\./g, '').replace('-', '');
+    return formattedCombination !== formattedForbiddenCpf;
+  });
 }
 
 const finished = util.promisify(stream.finished)
